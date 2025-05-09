@@ -449,26 +449,26 @@ CMD ["node", "app.js"]
 
 ## Build Docker Image (Local Machine)
 ```bash
-docker build -t travel-memory-app .
+docker build -t travel-memory-app-prince .
 ```
 
 ## Create ECR Repository
 1. Go to Amazon ECR console
 2. Click "Create repository"
-3. Name: "travel-memory-app"
+3. Name: "travel-memory-app-prince"
 4. Click "Create repository"
 
 ## Push Image to ECR
 In your terminal:
 ```bash
 # Get login command (use your region)
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin YOUR_AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 975050024946.dkr.ecr.ap-south-1.amazonaws.com
 
 # Tag the image
-docker tag travel-memory-app:latest YOUR_AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/travel-memory-app:latest
+docker tag travel-memory-app-prince:latest 975050024946.dkr.ecr.ap-south-1.amazonaws.com/travel-memory-app-prince:latest
 
 # Push the image
-docker push YOUR_AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/travel-memory-app:latest
+docker push 975050024946.dkr.ecr.ap-south-1.amazonaws.com/travel-memory-app-prince:latest
 ```
 
 ## Create ECS Cluster
@@ -516,6 +516,16 @@ docker push YOUR_AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/travel-memory-ap
    - VPC: Your VPC
    - Subnets: Select at least two public subnets
    - Security group: Create new with HTTP 8080 open
+  ``` 
+   Configure Security Group Rules
+  - Under "Inbound rules", click "Add rule"
+  - Configure the rule:
+  - Type      : Custom TCP
+  - Protocol  : TCP
+  - Port range: 8080
+  - Source    : Anywhere (0.0.0.0/0)
+  - You can add a description: "Allow HTTP traffic on port 8080"
+  ```
 5. Load balancing:
    - Type: Application Load Balancer
    - Select your ALB and target group
